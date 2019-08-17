@@ -36,12 +36,25 @@ app.get('/help', (req, res) => {
     name: 'Doug'
   })
 })
-
 app.get('/weather', (req, res) => {
   res.send({
     location: "Boston",
     temperature: 70,
     forecast: "Maybe it'll rain I dunno"
+  })
+})
+app.get('/help/*', (req, res) => {
+  res.render('notFound', {
+    title: "404 Not Found",
+    text: "Help page not found",
+    name: 'Doug'
+  })
+})
+app.get('*', (req, res) => {
+  res.render('notFound', {
+    title: '404 Not Found',
+    text: 'Your page was not found',
+    name: 'Doug'
   })
 })
 
