@@ -1,6 +1,7 @@
 const path = require('path')
 const express = require('express')
 const hbs = require('hbs')
+require('dotenv').config()
 
 const app = express()
 
@@ -8,6 +9,9 @@ const app = express()
 const publicDirectoryPath = path.join(__dirname, '../public/')
 const viewsPath = path.join(__dirname, '../templates/views')
 const partialsPath = path.join(__dirname, '../templates/partials')
+
+const geocode = require('./utils/geocode')
+const forecast = require('./utils/forecast')
 
 // Setup handlebars engine and views location
 app.set('view engine', 'hbs')
@@ -41,14 +45,24 @@ app.get('/help', (req, res) => {
 
 app.get('/weather', (req, res) => {
   if (!req.query.address) {
-    return res.send({
-      error: 'Address not provided.'
-    })
+    return res.send({ error: 'Address not provided.' })
   }
-  res.send({
-    location: "Boston",
-    temperature: 70,
-    forecast: "Maybe it'll rain I dunno"
+
+  const location = req.query.address
+  geocode(location, (error, { latitude, longitude, location }) => {
+    if (error) {
+      return res.send({ error: error })
+    }
+    forecast(latitude, longitude, (error, forecastData) => {
+        if (error) {
+          return res.send({ error: error })
+        }
+        
+        return res.send({
+          location,
+          forecastData
+        })
+    })
   })
 })
 
