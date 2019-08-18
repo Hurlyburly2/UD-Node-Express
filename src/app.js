@@ -49,7 +49,7 @@ app.get('/weather', (req, res) => {
   }
 
   const location = req.query.address
-  geocode(location, (error, { latitude, longitude, location }) => {
+  geocode(location, (error, { latitude, longitude, location } = {}) => {
     if (error) {
       return res.send({ error: error })
     }
