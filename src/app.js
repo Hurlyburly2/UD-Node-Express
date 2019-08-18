@@ -23,12 +23,14 @@ app.get('', (req, res) => {
     name: 'Doug'
   })
 })
+
 app.get('/about', (req, res) => {
   res.render('about', {
     title: 'About Me',
     name: 'Doug'
   })
 })
+
 app.get('/help', (req, res) => {
   res.render('help', {
     title: 'Help',
@@ -36,13 +38,31 @@ app.get('/help', (req, res) => {
     name: 'Doug'
   })
 })
+
 app.get('/weather', (req, res) => {
+  if (!req.query.address) {
+    return res.send({
+      error: 'Address not provided.'
+    })
+  }
   res.send({
     location: "Boston",
     temperature: 70,
     forecast: "Maybe it'll rain I dunno"
   })
 })
+
+app.get('/products', (req,res) => {
+  if (!req.query.search) {
+    return res.send({
+      error: 'You must provide a search term'
+    })
+  }
+  res.send({
+    products: []
+  })
+})
+
 app.get('/help/*', (req, res) => {
   res.render('notFound', {
     title: "404 Not Found",
@@ -50,6 +70,7 @@ app.get('/help/*', (req, res) => {
     name: 'Doug'
   })
 })
+
 app.get('*', (req, res) => {
   res.render('notFound', {
     title: '404 Not Found',
