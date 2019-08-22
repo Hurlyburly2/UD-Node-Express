@@ -9,7 +9,7 @@ const forecast = (latitude, longitude, callback) => {
     } else if (body.error) {
       console.log("Unable to retrieve weather information", undefined)
     } else {
-      const forecast = body.daily.data[0].summary + " It is currently " + body.currently.temperature + " degrees out. There is a " + body.currently.precipProbability + "% chance of rain"
+      const forecast = body.daily.data[0].summary + " It is currently " + body.currently.temperature + " degrees out. There is a " + body.currently.precipProbability + "% chance of rain. High: " + body.daily.data[0].temperatureHigh + ". Low: " + body.daily.data[0].temperatureLow
       callback(undefined, forecast)
     }
   })
